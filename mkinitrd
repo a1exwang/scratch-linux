@@ -1,0 +1,26 @@
+#!/bin/bash
+set -xe
+
+if !(test -f busybox/busybox); then
+  cp busybox.config busybox/.config
+  make -j$(nproc) busybox -C busybox
+fi
+
+mkdir -p initrd
+cd initrd
+mkdir -p var
+mkdir -p tmp
+mkdir -p dev
+mkdir -p bin
+mkdir -p etc
+mkdir -p sys
+mkdir -p sys
+mkdir -p proc
+mkdir -p run
+
+cp ../init init
+cp ../busybox/busybox bin/busybox
+ln -s /bin/busybox bin/sh
+ln -s /bin/busybox bin/mount
+
+find . | cpio -H newc -o | gzip > ../initrd.img

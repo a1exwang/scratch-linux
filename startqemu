@@ -1,0 +1,2 @@
+#!/bin/bash
+qemu-system-x86_64 -nographic -enable-kvm -vga virtio -kernel linux/arch/x86/boot/bzImage -initrd initrd.img -append "console=ttyS0 nokaslr tsc=unstable" -m 512 -cpu host -S -s
